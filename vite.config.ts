@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       react()
     ],
-    base:env.VITE_BASE_PATH || "/",
+    base:env.VITE_BASE_PATH || "/ecommerce-catalog-module",
     server: {
       proxy: {
         // Proxy para evitar problemas de CORS durante desarrollo
