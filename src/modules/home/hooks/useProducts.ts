@@ -18,7 +18,7 @@ export function useProducts() {
         setLoading(true);
         setError(null);
         // Usamos variable de entorno para endpoint
-        const apiUrl = import.meta.env.VITE_API_URL || "https://fakestoreapi.com";
+        const apiUrl = import.meta.env.VITE_CATALOG_API_URL || "https://fakestoreapi.com";
         const res = await fetch(`${apiUrl}/products?limit=4`);
         if (!res.ok) throw new Error("Error al cargar productos");
         const data = await res.json();
