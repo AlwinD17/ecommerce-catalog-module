@@ -24,7 +24,6 @@ export const FilterMobile = ({
   onFilterChange, 
   onClearFilters, 
   onApplyFilters,
-  priceErrors
 }: FilterMobileProps) => {
   const { atributos, loading } = useAtributos();
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({});

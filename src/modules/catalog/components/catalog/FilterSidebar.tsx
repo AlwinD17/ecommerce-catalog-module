@@ -19,7 +19,7 @@ interface SelectedFilters {
   [atributoNombre: string]: string[];
 }
 
-export const FilterSidebar = ({ filters, onFilterChange, onClearFilters, onApplyFilters, priceErrors }: FilterSidebarProps) => {
+export const FilterSidebar = ({ filters, onFilterChange, onClearFilters, onApplyFilters}: FilterSidebarProps) => {
   const { atributos, loading } = useAtributos();
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({});
 
