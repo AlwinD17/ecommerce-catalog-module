@@ -46,7 +46,7 @@ export const CatalogPage = () => {
 
   const [pagination, setPagination] = useState({
     currentPage: Number(searchParams.get("page")) || 1,
-    itemsPerPage: Number(searchParams.get("limit")) || 3,
+    itemsPerPage: Number(searchParams.get("limit")) || 9,
     currentSort: "price",
   });
 
