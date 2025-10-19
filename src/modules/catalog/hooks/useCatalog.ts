@@ -26,7 +26,6 @@ export const useCatalog = (): UseCatalogResult => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Instancia única del servicio
   const catalogService = useMemo(() => new CatalogService(), []);
 
   const fetchProducts = useCallback(async (filters: ProductFilters, pagination: { page: number; limit: number }) => {

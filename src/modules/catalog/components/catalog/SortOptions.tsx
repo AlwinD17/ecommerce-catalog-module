@@ -12,7 +12,6 @@ export const SortOptions = ({ currentSort, onSortChange }: SortOptionsProps) => 
   ];
 
   const handlePriceSort = () => {
-    // Alternar entre precio ascendente y descendente
     if (currentSort === 'price_asc') {
       onSortChange('price_desc');
     } else {
@@ -22,10 +21,8 @@ export const SortOptions = ({ currentSort, onSortChange }: SortOptionsProps) => 
 
   const getPriceIcon = () => {
     if (currentSort === 'price_asc') {
-      // Precio menor a mayor (ascendente) - flecha hacia arriba
       return <FiChevronUp className="w-4 h-4" />;
-    } else if (currentSort === 'price_desc') {
-      // Precio mayor a menor (descendente) - flecha hacia abajo
+    } else if (currentSort === 'price_desc') { 
       return <FiChevronDown className="w-4 h-4" />;
     }
     return null;
@@ -38,7 +35,7 @@ export const SortOptions = ({ currentSort, onSortChange }: SortOptionsProps) => 
       <div className="flex items-center justify-end space-x-4">
         <span className="text-sm font-medium text-gray-700">Ordenar por:</span>
         <div className="flex space-x-1">
-          {/* Botón de Precio separado */}
+          
           <button
             onClick={handlePriceSort}
             className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors flex items-center space-x-2 ${
@@ -51,7 +48,7 @@ export const SortOptions = ({ currentSort, onSortChange }: SortOptionsProps) => 
             {isPriceSelected && getPriceIcon()}
           </button>
 
-          {/* Otros botones de ordenamiento */}
+          
           {sortOptions.map((option) => (
             <button
               key={option.value}
