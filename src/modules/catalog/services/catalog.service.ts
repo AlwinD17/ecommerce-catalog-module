@@ -74,12 +74,12 @@ export class CatalogService {
       
       // Parámetros de filtros
       if (filters) {
-        // Combinar todos los atributos que no sean talla, color o unidad de medida bajo "Categoria"
+        
         const categorias = [];
         if (filters.category && filters.category.length > 0) {
           categorias.push(...filters.category);
         }
-        // Agregar otros atributos que no sean talla, color o unidad de medida
+        
         if (filters.tags && filters.tags.length > 0) {
           categorias.push(...filters.tags);
         }
@@ -169,19 +169,6 @@ export class CatalogService {
     return enhanceProduct(apiProduct);
   }
 
-
-
-  /**
-   * Obtener productos con descuento
-   */
-  async getDiscountedProducts(limit: number = 8): Promise<FrontendProductSummary[]> {
-    const apiResponse = await this.fetchProducts({ page: 1, limit: 100 }); 
-    const transformedProducts = apiResponse.data
-      .map((apiProduct) => formatearProducto(apiProduct))
-      .filter(p => p.isPromo); 
-    
-    return transformedProducts.slice(0, limit);
-  }
 
   /**
    * Buscar productos por query
