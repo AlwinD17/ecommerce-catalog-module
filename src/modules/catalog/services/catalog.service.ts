@@ -45,7 +45,8 @@ export class CatalogService {
    */
   private async fetchProducts(
     pagination?: PaginationParams, 
-    filters?: ProductFilters
+    filters?: ProductFilters,
+    sortBy?: string
   ): Promise<{
     data: ProductSummary[];
     total: number;
@@ -68,14 +69,28 @@ export class CatalogService {
       
       // Parámetros de paginación
       if (pagination) {
-        params.append('PageNumber', pagination.page.toString());
-        params.append('PageSize', pagination.limit.toString());
+        if (pagination.page != null) {
+          params.append('PageNumber', pagination.page.toString());
+        }
+        if (pagination.limit != null) {
+          params.append('PageSize', pagination.limit.toString());
+        }
+      }
+      
+      // Parámetros de ordenamiento
+      if (sortBy) {
+        if (sortBy === 'price_asc') {
+          params.append('SortBy', 'Precio');
+          params.append('IsDescending', 'false');
+        } else if (sortBy === 'price_desc') {
+          params.append('SortBy', 'Precio');
+          params.append('IsDescending', 'true');
+        }
       }
       
       // Parámetros de filtros
       if (filters) {
-        
-        const categorias = [];
+        const categorias: string[] = [];
         if (filters.category && filters.category.length > 0) {
           categorias.push(...filters.category);
         }
@@ -84,11 +99,29 @@ export class CatalogService {
           categorias.push(...filters.tags);
         }
         
-        params.append('Categoria', categorias.join(',') || '');
-        params.append('Color', filters.color?.join(',') || '');
-        params.append('Talla', filters.size?.join(',') || '');
-        params.append('PrecioMin', filters.priceMin?.toString() || '');
-        params.append('PrecioMax', filters.priceMax?.toString() || '');
+        if (categorias.length > 0) {
+          params.append('Categoria', categorias.join(','));
+        }
+        
+        if (filters.color && filters.color.length > 0) {
+          params.append('Color', filters.color.join(','));
+        }
+        
+        if (filters.size && filters.size.length > 0) {
+          params.append('Talla', filters.size.join(','));
+        }
+        
+        if (filters.priceMin != null) {
+          params.append('PrecioMin', filters.priceMin.toString());
+        }
+        
+        if (filters.priceMax != null) {
+          params.append('PrecioMax', filters.priceMax.toString());
+        }
+        
+        if (filters.search && filters.search.trim() !== '') {
+          params.append('Search', filters.search);
+        }
       }
       
       const fullUrl = params.toString() ? `${url}?${params.toString()}` : url;
@@ -136,10 +169,11 @@ export class CatalogService {
    */
   async getProducts(
     filters: ProductFilters = {}, 
-    pagination: PaginationParams = { page: 1, limit: 9 }
+    pagination: PaginationParams = { page: 1, limit: 9 },
+    sortBy?: string
   ): Promise<PaginationResult<FrontendProductSummary>> {
     // Obtener datos de la API real con paginación y filtros
-    const apiResponse = await this.fetchProducts(pagination, filters);
+    const apiResponse = await this.fetchProducts(pagination, filters, sortBy);
     
     // Formatear productos para UI
     const productSummaries: FrontendProductSummary[] = apiResponse.data.map((apiProduct) => 
@@ -173,13 +207,13 @@ export class CatalogService {
   /**
    * Buscar productos por query
    */
-  async searchProducts(query: string, filters?: Partial<ProductFilters>): Promise<FrontendProductSummary[]> {
+  async searchProducts(query: string, filters?: Partial<ProductFilters>, sortBy?: string): Promise<FrontendProductSummary[]> {
     const searchFilters: ProductFilters = {
       search: query,
       ...filters
     };
     
-    const apiResponse = await this.fetchProducts({ page: 1, limit: 100 }, searchFilters);
+    const apiResponse = await this.fetchProducts({ page: 1, limit: 100 }, searchFilters, sortBy);
     const transformedProducts = apiResponse.data.map((apiProduct) => formatearProducto(apiProduct));
     
     let filteredProducts = transformedProducts;
